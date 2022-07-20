@@ -71,6 +71,7 @@
     height: 100%;
     background-color: var(--clr-neutral-400);
     font-family: var(--ff-primary);
+    
   }
   
   /* Set core root defaults */
@@ -98,7 +99,7 @@
 
   /* Remove input styling */
 
-  input, fieldset {
+  input, fieldset,select {
     all: unset;
   }
   
@@ -208,13 +209,29 @@
 
   /* Header  */
 
-.mode-box {
+  header{
+    padding: 1rem 0rem;
+  }
+
+.light-mode {
     display: flex;
     white-space: nowrap;
     align-items: center;
+    gap: 1rem;
 }
 
-input {
+.light-mode img{
+  width: 1rem;
+}
+
+/* Search & Filter */
+
+.search-bar{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+input, select {
 background-color: var(--clr-neutral-300);
 border: none;
 padding: 1rem;
@@ -225,3 +242,26 @@ color: var(--clr-neutral-100);
     color: var(--clr-neutral-100);
     opacity: 1; /* Firefox */
   }
+
+    /* Countries  */
+
+    .country-list{
+      display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  padding-bottom: 3rem;
+    }
+    
+    .country-info{
+      padding: 1rem;
+    }
+
+    .country-card img{
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    h2{
+      padding-bottom: 1rem;
+    }
