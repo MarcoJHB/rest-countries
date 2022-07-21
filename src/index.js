@@ -1,13 +1,6 @@
 import "./style.css";
 
-// async function fetchCountriesJSON() {
-//   const response = await fetch("https://restcountries.com/v3.1/all");
-//   return countries;
-// }
-
-// fetch("https://restcountries.com/v3.1/all")
-//   .then((response) => response.json())
-//   .then((data) => console.log(data));
+const countryArr = [];
 
 async function getCountries() {
   let url = "https://restcountries.com/v3.1/all";
@@ -21,26 +14,44 @@ async function getCountries() {
 
 async function renderCountries() {
   let countries = await getCountries();
-  let html = "";
   countries.forEach((country) => {
-    let htmlSegment = `
-    <div class="country-card bg-neutral-300 text-neutral-100">
-          <img src="${country.flags.svg}" />
-          <div class="country-info">
-            <h2 class="country-name fw-bold">${country.name.common}</h2>
-            <ul role="list">
-              <li><span class="fw-bold">Population: </span>${country.population}</li>
-              <li><span class="fw-bold">Region: </span> ${country.region}</li>
-              <li><span class="fw-bold">Capital: </span> ${country.capital}</li>
-            </ul>
-          </div>
-        </div>`;
-
-    html += htmlSegment;
+    countryArr.push([
+      { flag: country.flags.svg },
+      { name: country.name.common },
+      { population: country.population },
+      { region: country.region },
+      { capital: country.capital },
+    ]);
   });
+  displayCountries();
+}
+
+renderCountries();
+
+function displayCountries() {
+  let html = "";
+  for (let i = 0; i < countryArr.length; i++) {
+    let htmlSegment = `
+          <div class="country-card bg-neutral-300 text-neutral-100">
+                <img src="${Object.values(countryArr[i][0])}" />
+                <div class="country-info">
+                  <h2 class="country-name fw-bold">${Object.values(countryArr[i][1])}</h2>
+                  <ul role="list">
+                    <li><span class="fw-bold">Population: </span>${Object.values(
+                      countryArr[i][2]
+                    )}</li>
+                    <li><span class="fw-bold">Region: </span> ${Object.values(
+                      countryArr[i][3]
+                    )}</li>
+                    <li><span class="fw-bold">Capital: </span> ${Object.values(
+                      countryArr[i][4]
+                    )}</li>
+                  </ul>
+                </div>
+              </div>`;
+    html += htmlSegment;
+  }
 
   let container = document.querySelector(".country-list");
   container.innerHTML = html;
 }
-
-renderCountries();
