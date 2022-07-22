@@ -615,6 +615,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const countryArr = [];
+const regionFilter = document.querySelector(".region-filter");
+
+function regionOption(regionChoice) {
+  return (regionChoice = "All");
+}
 
 async function getCountries() {
   let url = "https://restcountries.com/v3.1/all";
@@ -629,14 +634,17 @@ async function getCountries() {
 async function renderCountries() {
   let countries = await getCountries();
   countries.forEach((country) => {
-    countryArr.push([
-      { flag: country.flags.svg },
-      { name: country.name.common },
-      { population: country.population },
-      { region: country.region },
-      { capital: country.capital },
-    ]);
+    let countryObj = {
+      flag: country.flags.svg,
+      name: country.name.common,
+      population: country.population,
+      region: country.region,
+      capital: country.capital,
+    };
+    countryArr.push(countryObj);
   });
+  // console.log(countryArr[1].name);
+  // console.log(countryArr.map((country) => country.region));
   displayCountries();
 }
 
@@ -644,28 +652,21 @@ renderCountries();
 
 function displayCountries() {
   let html = "";
-  for (let i = 0; i < countryArr.length; i++) {
+  countryArr.filter(regionOption).forEach((country) => {
     let htmlSegment = `
-          <div class="country-card bg-neutral-300 text-neutral-100">
-                <img src="${Object.values(countryArr[i][0])}" />
-                <div class="country-info">
-                  <h2 class="country-name fw-bold">${Object.values(countryArr[i][1])}</h2>
-                  <ul role="list">
-                    <li><span class="fw-bold">Population: </span>${Object.values(
-                      countryArr[i][2]
-                    )}</li>
-                    <li><span class="fw-bold">Region: </span> ${Object.values(
-                      countryArr[i][3]
-                    )}</li>
-                    <li><span class="fw-bold">Capital: </span> ${Object.values(
-                      countryArr[i][4]
-                    )}</li>
-                  </ul>
-                </div>
-              </div>`;
+    <div class="country-card bg-neutral-300 text-neutral-100">
+          <img src="${country.flag}" />
+          <div class="country-info">
+            <h2 class="country-name fw-bold">${country.name}</h2>
+            <ul role="list">
+              <li><span class="fw-bold">Population: </span>${country.population}</li>
+              <li><span class="fw-bold">Region: </span> ${country.region}</li>
+              <li><span class="fw-bold">Capital: </span> ${country.capital}</li>
+            </ul>
+          </div>
+        </div>`;
     html += htmlSegment;
-  }
-
+  });
   let container = document.querySelector(".country-list");
   container.innerHTML = html;
 }
